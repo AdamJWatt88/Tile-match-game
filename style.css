@@ -9,6 +9,8 @@ body {
   height: 100vh;
   padding: 50px;
   font-family: "Roboto", sans-serif;
+  /* double check this overflow-x fixes scrolling issue on mobile */
+  overflow-x: hidden;
 }
 
 .header {

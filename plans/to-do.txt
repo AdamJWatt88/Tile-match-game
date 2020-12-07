@@ -13,6 +13,8 @@
 
 16) Fix grid to fit on small mobile phone screens
 
+17) Fix scrolling issue on mobile when a phone is turned sideways.
+
 
 
             Finished plans/to-do

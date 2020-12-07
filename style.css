@@ -13,6 +13,10 @@ body {
   overflow-x: hidden;
 }
 
+h1 {
+  color: green;
+}
+
 .header {
   position: relative;
   display: flex;

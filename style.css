@@ -1,0 +1,111 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+:root {
+  --tileHeight: 100px;
+  --tileWidth: 100px;
+}
+
+body {
+  height: 100vh;
+  padding: 50px;
+  font-family: "Roboto", sans-serif;
+}
+
+.header {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.header h4 {
+  text-align: center;
+  position: absolute;
+  left: 0;
+  bottom: -50%;
+}
+
+.game-container {
+  margin-top: 50px;
+  height: max-content;
+  max-width: 100%;
+  background-color: blue;
+  box-shadow: 0px 0px 10px 0px rgba(10, 10, 10, 10);
+}
+
+.grid-container {
+  padding: 25px;
+  display: grid;
+  margin-left: 35px;
+  /* fix this grid not scaling correctly */
+  /* when using auto for the minmax, a min-width and min-height needs to be applied to the child .tile elements (i think)*/
+  grid-template-columns: repeat(auto-fit, minmax(50px, 100px));
+  grid-template-rows: auto;
+  gap: 20px;
+  max-width: 100%;
+  height: max-content;
+  background-color: blue;
+}
+
+img {
+  height: var(--tileHeight);
+  width: var(--tileWidth);
+}
+
+.tile {
+  position: relative;
+  height: var(--tileHeight);
+  width: var(--tileWidth);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.slide {
+  position: absolute;
+  z-index: 5;
+  border: 1px green solid;
+  box-shadow: 0px 0px 10px 0px rgba(10, 10, 10, 10);
+  height: var(--tileHeight);
+  width: var(--tileWidth);
+  background-color: black;
+  transform: translate(0%);
+  transition: ease 1s;
+  opacity: 100%;
+}
+
+.slide:active {
+  border: 1px white solid;
+}
+
+.slide.open:active {
+  border: 1px white solid;
+}
+
+.slide.open {
+  border: 1px white solid;
+  transform: translate(-100%);
+  transition: ease 1s;
+  opacity: -100%;
+  position: relative;
+  z-index: -1;
+}
+
+.slide:hover {
+  cursor: pointer;
+  background-color: white;
+  /* opacity: 100%; */
+  /* transition: ease 0.1s; */
+}
+
+.slide.match {
+  position: relative;
+  z-index: -1;
+}
+
+.scoreGoBig {
+  transform: scale(1.5);
+  transition: ease 1s;
+}

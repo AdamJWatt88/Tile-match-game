@@ -5,6 +5,12 @@
 
 9) Fix when a user clicks too fast on a single tile. When clicked too fast it registers as a match. This is because the .slide is still available to click and hasn't been removed quick enough for the user to NOT click it.
 
+9b) Maybe create a timeout to e.target inside matchtiles function that disables clicking a target for a split second to allow time for the original tile to disappear.
+
+9c) Maybe add another data tag that gives each slide a unique id that no other slide has. As of right now the only comparison happening is the images id inside the images object.
+
+9d) Adding a unique slide id and matching it sort of worked. The score doesnt go up when i single tile is clicked but now when a match is made only the second tile clicked stays open. Also the tile just closes when it should stay open.
+
 10) Fix the overall style of the game. It looks pretty drab at the moment.
 
 14) Add a start screen that asks for a difficulty. This screen will make a choice to have 20,30, or 40 tiles. The sizes are still yet to be determined as to what will fit on screens.
@@ -14,6 +20,8 @@
 16) Fix grid to fit on small mobile phone screens
 
 17) Fix scrolling issue on mobile when a phone is turned sideways.
+
+18) Fix tiles remaining white after a user touches one on mobile.
 
 
 

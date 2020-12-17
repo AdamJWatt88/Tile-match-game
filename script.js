@@ -88,6 +88,7 @@ const imagesArr = [];
 const randomizedArr = [];
 let choices = [];
 let matches = [];
+let sameTile = [];
 let score = 0;
 
 // this loops twice and produces the desired effect but is ridiculous. try to figure out how to write this with possibly recursive method
@@ -108,12 +109,13 @@ randomizeImages(imagesArr);
 
 // this function adds the images into div.tile and gives the .slide div a data attribute of data-id
 function addTiles() {
-  imagesArr.forEach((image) => {
+  imagesArr.forEach((image, index) => {
     const slide = document.createElement("div");
     const square = document.createElement("div");
     slide.classList.add("slide");
     square.classList.add("tile");
     slide.setAttribute("data-id", image.id);
+    slide.setAttribute("data-slide-id", index);
     square.style.backgroundImage = `url(${image.image})`;
     square.appendChild(slide);
     grid.appendChild(square);
@@ -124,10 +126,12 @@ addTiles();
 
 // this function compares the two tiles to see if they match
 function matchTiles(e) {
+  console.log(e.target.getAttribute("data-slide-id"));
   choices.push(e.target.getAttribute("data-id"));
-  matches.push(e.target);
-  console.log(matches);
-  if (choices[0] === choices[1]) {
+  sameTile.push(e.target.getAttribute("data-slide-id"));
+  if (choices[0] === choices[1] && sameTile[0] !== sameTile[1]) {
+    console.log(matches);
+    matches.push(e.target);
     score++;
     scoreText.classList.add("scoreGoBig");
     setTimeout(() => {
@@ -145,6 +149,7 @@ function closeTiles(e) {
   if (choices.length >= 2) {
     choices = [];
     matches = [];
+    sameTile = [];
     setTimeout(() => {
       document.querySelectorAll(".slide").forEach((slide) => {
         slide.classList.remove("open");
@@ -167,3 +172,11 @@ document.querySelectorAll(".slide").forEach((slide) => {
     openSlide(e);
   });
 });
+
+// this code might be able to stop click events to prevent double clicking tiles and messing up the score
+// document.addEventListener("click", handler, true);
+
+// function handler(e) {
+//   e.stopPropagation();
+//   e.preventDefault();
+// }

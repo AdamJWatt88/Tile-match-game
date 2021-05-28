@@ -1,113 +1,75 @@
 const grid = document.getElementById("grid-container");
-const scoreText = document.getElementById("score");
+const matchesText = document.getElementById("matches");
+const easyBtn = document.getElementById("easy-btn");
+const mediumBtn = document.getElementById("medium-btn");
+const hardBtn = document.getElementById("hard-btn");
+const playAgain = document.getElementById("play-again-btn");
+const startScreen = document.getElementById("start-screen");
+const gameScreen = document.getElementById("game-screen");
+const winScreen = document.getElementById("win-screen");
+const loadingScreen = document.getElementById("loading-screen");
 
-const images = [
-  {
-    id: 1,
-    image: "/images/cheese/cheese1.jpg",
-  },
-  {
-    id: 2,
-    image: "/images/cheese/cheese2.jpg",
-  },
-  {
-    id: 3,
-    image: "/images/cheese/cheese3.jpg",
-  },
-  {
-    id: 4,
-    image: "/images/cheese/cheese4.jpg",
-  },
-  {
-    id: 5,
-    image: "/images/cheese/cheese5.jpg",
-  },
-  {
-    id: 6,
-    image: "/images/cheese/cheese6.jpg",
-  },
-  {
-    id: 7,
-    image: "/images/cheese/cheese7.jpg",
-  },
-  {
-    id: 8,
-    image: "/images/cheese/cheese8.jpg",
-  },
-  {
-    id: 9,
-    image: "/images/cheese/cheese9.jpg",
-  },
-  {
-    id: 10,
-    image: "/images/cheese/cheese10.jpg",
-  },
-  {
-    id: 11,
-    image: "/images/moose/moose1.jpg",
-  },
-  {
-    id: 12,
-    image: "/images/moose/moose2.jpg",
-  },
-  {
-    id: 13,
-    image: "/images/moose/moose3.jpg",
-  },
-  {
-    id: 14,
-    image: "/images/moose/moose4.jpg",
-  },
-  {
-    id: 15,
-    image: "/images/moose/moose5.jpg",
-  },
-  {
-    id: 16,
-    image: "/images/moose/moose6.jpg",
-  },
-  {
-    id: 17,
-    image: "/images/moose/moose7.jpg",
-  },
-  {
-    id: 18,
-    image: "/images/moose/moose8.jpg",
-  },
-  {
-    id: 19,
-    image: "/images/moose/moose9.jpg",
-  },
-  {
-    id: 20,
-    image: "/images/moose/moose10.jpg",
-  },
-];
+let images = [];
+let imagesArr = [];
+let randomizedArr = [];
 
-const imagesArr = [];
-const randomizedArr = [];
-let choices = [];
+let choices = {
+  choiceOne: null,
+  choiceTwo: null,
+};
 let matches = [];
-let sameTile = [];
-let score = 0;
+let close = false;
+let currentSlide = null;
 
-// this loops twice and produces the desired effect but is ridiculous. try to figure out how to write this with possibly recursive method
-function addPics() {
-  images.forEach((image) => imagesArr.push(image));
-  images.forEach((image) => imagesArr.push(image));
+let matchesMade = 0;
+
+let difficulty = null;
+
+const animationTime = 1000;
+
+// Loop through images in icon folder and make an array.
+function fillImages() {
+  for (let i = 1; i <= difficulty; i++) {
+    images.push({ id: i, image: `/icons/icon${i}.png` });
+  }
 }
 
-addPics();
+// Loop through the images array twice to make matching copies.
+function addPics() {
+  for (let i = 1; i <= 2; i++) {
+    images.forEach((image) => imagesArr.push(image));
+  }
+}
 
-// this function randomizes the imagesArr
+// Randomize the imagesArr
 function randomizeImages(array) {
   array.sort(() => Math.random() - 0.5);
   return array;
 }
 
-randomizeImages(imagesArr);
+// Set the grid size based on difficulty.
+function setGrid(difficulty) {
+  switch (difficulty) {
+    case 10:
+      grid.style.setProperty("--gridCol", 5),
+        grid.style.setProperty("--gridRow", 4);
+      break;
 
-// this function adds the images into div.tile and gives the .slide div a data attribute of data-id
+    case 15:
+      grid.style.setProperty("--gridCol", 6),
+        grid.style.setProperty("--gridRow", 5);
+      break;
+
+    case 20:
+      grid.style.setProperty("--gridCol", 8),
+        grid.style.setProperty("--gridRow", 5);
+      break;
+    default:
+      return;
+  }
+}
+
+// Loop the images array and add images to the DOM.
 function addTiles() {
   imagesArr.forEach((image, index) => {
     const slide = document.createElement("div");
@@ -122,61 +84,121 @@ function addTiles() {
   });
 }
 
-addTiles();
-
-// this function compares the two tiles to see if they match
-function matchTiles(e) {
-  console.log(e.target.getAttribute("data-slide-id"));
-  choices.push(e.target.getAttribute("data-id"));
-  sameTile.push(e.target.getAttribute("data-slide-id"));
-  if (choices[0] === choices[1] && sameTile[0] !== sameTile[1]) {
-    console.log(matches);
+// Gather the id of the image and set to the choices object. Set the slide id to the currentSlide varibale. After two choices are made reset choices, matches and currentSlide.
+function chooseTiles(e) {
+  const id = e.target.getAttribute("data-id");
+  const slide = e.target.getAttribute("data-slide-id");
+  if (choices.choiceOne === null) {
+    choices.choiceOne = id;
     matches.push(e.target);
-    score++;
-    scoreText.classList.add("scoreGoBig");
+    currentSlide = slide;
+  } else if (currentSlide !== slide) {
+    choices.choiceTwo = id;
+    matches.push(e.target);
+
     setTimeout(() => {
-      scoreText.classList.remove("scoreGoBig");
-    }, 1000);
-    scoreText.innerHTML = `Score: ${score}`;
-    matches.forEach((match) => {
-      match.classList.add("match");
-    });
+      (choices = {
+        choiceOne: null,
+        choiceTwo: null,
+      }),
+        (matches = []);
+      currentSlide = null;
+    }, 100);
   }
 }
 
-// this function closes all tiles after two choices have been made
-function closeTiles(e) {
-  if (choices.length >= 2) {
-    choices = [];
-    matches = [];
-    sameTile = [];
+// Toggle the close flag to close tiles. When true remove the open class.
+function closeTiles() {
+  if (choices.choiceTwo !== null) {
+    close = true;
     setTimeout(() => {
       document.querySelectorAll(".slide").forEach((slide) => {
         slide.classList.remove("open");
       });
-    }, 900);
+      close = false;
+    }, animationTime);
   }
 }
 
-// this function add the open class to the tiles then does the comparison of the tiles by callig matchTiles then decides if they dont match to then call clearTiles
+// Compare tile choices in the choices object. If a match has beeen made remove event listener from tile to remove tile from the game then increase score.
+function matchTiles() {
+  if (choices.choiceOne === choices.choiceTwo) {
+    matches.forEach((match) => {
+      match.classList.add("match");
+      match.removeEventListener("click", slideEvent);
+      setTimeout(() => {
+        match.classList.remove("slide");
+        match.style.backgroundImage = "url(/images/empty-block.png)";
+      }, animationTime);
+    });
+
+    matchesMade++;
+    matchesText.classList.add("matchesScale");
+    setTimeout(() => {
+      matchesText.classList.remove("matchesScale");
+    }, animationTime);
+    matchesText.innerHTML = `Matches: ${matchesMade}`;
+  }
+}
+
+// Run tile choosing functions and display win screen when matches made equals the difficulty.
 function openSlide(e) {
-  if (e.target.matches(".slide")) {
-    e.target.classList.add("open");
+  e.target.classList.add("open");
+
+  chooseTiles(e);
+  closeTiles();
+  matchTiles();
+
+  if (matchesMade === difficulty) {
+    setTimeout(() => {
+      gameScreen.style.display = "none";
+      winScreen.style.display = "flex";
+    }, animationTime);
   }
-  matchTiles(e);
-  closeTiles(e);
 }
 
-document.querySelectorAll(".slide").forEach((slide) => {
-  slide.addEventListener("click", (e) => {
+// Event function for tiles.
+function slideEvent(e) {
+  if (close === false) {
     openSlide(e);
-  });
-});
+  }
+}
 
-// this code might be able to stop click events to prevent double clicking tiles and messing up the score
-// document.addEventListener("click", handler, true);
+// Start the game.
+function startGame(e) {
+  difficulty = +e.target.getAttribute("value");
+  startScreen.style.display = "none";
+  loadingScreen.style.display = "flex";
+  setTimeout(() => {
+    loadingScreen.style.display = "none";
+    gameScreen.style.display = "flex";
+    fillImages();
+    addPics();
+    randomizeImages(imagesArr);
+    addTiles();
+    setGrid(difficulty);
 
-// function handler(e) {
-//   e.stopPropagation();
-//   e.preventDefault();
-// }
+    document.querySelectorAll(".slide").forEach((slide) => {
+      slide.addEventListener("click", slideEvent);
+    });
+  }, animationTime);
+}
+
+// Restart the game.
+function restartGame() {
+  images = [];
+  imagesArr = [];
+  randomizedArr = [];
+  matches = [];
+  matchesMade = 0;
+  matchesText.innerText = `Matches ${matchesMade}`;
+  gameScreen.style.display = "none";
+  winScreen.style.display = "none";
+  startScreen.style.display = "flex";
+  document.querySelectorAll(".tile").forEach((tile) => grid.removeChild(tile));
+}
+
+easyBtn.addEventListener("click", (e) => startGame(e));
+mediumBtn.addEventListener("click", (e) => startGame(e));
+hardBtn.addEventListener("click", (e) => startGame(e));
+playAgain.addEventListener("click", () => restartGame());

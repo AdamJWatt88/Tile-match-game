@@ -1,3 +1,0 @@
-The data attribute might be able to be added to the div.tile.
-
-The div.tile might be able to be the sliding tile without having to add another div that does the sliding and unsliding

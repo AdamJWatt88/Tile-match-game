@@ -161,10 +161,6 @@ body {
   padding: 10px;
   display: grid;
   margin-top: 10%;
-  /* grid-template-columns: repeat(var(--gridCol), minmax(10px, 50px));
-  grid-template-rows: repeat(var(--gridRow), minmax(10px, 50px)); */
-  /* grid-template-columns: repeat(var(--gridCol), minmax(25px, 50px));
-  grid-template-rows: repeat(var(--gridRow), minmax(25px, 50px)); */
   grid-template-columns: repeat(var(--gridCol), 1fr);
   grid-template-rows: repeat(var(--gridRow), 1fr);
   gap: 5px;

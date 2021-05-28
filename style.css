@@ -101,7 +101,6 @@ body {
 }
 
 .start-screen {
-  /* display: none; */
   flex-direction: column;
   text-align: center;
   z-index: 10;
@@ -162,8 +161,12 @@ body {
   padding: 10px;
   display: grid;
   margin-top: 10%;
-  grid-template-columns: repeat(var(--gridCol), minmax(10px, 50px));
-  grid-template-rows: repeat(var(--gridRow), minmax(10px, 50px));
+  /* grid-template-columns: repeat(var(--gridCol), minmax(10px, 50px));
+  grid-template-rows: repeat(var(--gridRow), minmax(10px, 50px)); */
+  /* grid-template-columns: repeat(var(--gridCol), minmax(25px, 50px));
+  grid-template-rows: repeat(var(--gridRow), minmax(25px, 50px)); */
+  grid-template-columns: repeat(var(--gridCol), minmax(20px, 1fr));
+  grid-template-rows: repeat(var(--gridRow), minmax(20px, 1fr));
   gap: 5px;
   width: 100%;
   height: 90%;
@@ -173,7 +176,7 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  background: center / cover no-repeat;
+  background: center / contain no-repeat;
 }
 
 .slide {
@@ -181,7 +184,7 @@ body {
   z-index: 5;
   width: 100%;
   height: 100%;
-  background: center / cover no-repeat url("/images/block.png");
+  background: center / contain no-repeat url("/images/block.png");
   transform: translate(0%);
   transition: ease 0.5s;
   opacity: 1;
@@ -197,14 +200,14 @@ body {
 
 .slide:hover {
   cursor: pointer;
-  background: center / cover no-repeat url("/images/question-mark.png");
+  background: center / contain no-repeat url("/images/question-mark.png");
 }
 
 .match {
   position: relative;
   width: 100%;
   height: 100%;
-  background: center / cover no-repeat;
+  background: center / contain no-repeat;
   transform: translate(0%);
   transition: ease 0.5s;
   opacity: 1;
@@ -224,6 +227,10 @@ body {
 }
 
 @media (max-width: 500px) {
+  body {
+    /* align-items: center; */
+  }
+
   .tv-party-tonight {
     height: var(--tv-height);
     width: 90vw;

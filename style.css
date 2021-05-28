@@ -194,7 +194,8 @@ body {
   z-index: -1;
 }
 
-.slide:hover {
+.slide:hover,
+.slide:active {
   cursor: pointer;
   background: center / contain no-repeat url("/images/question-mark.png");
 }

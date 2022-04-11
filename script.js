@@ -8,6 +8,8 @@ const startScreen = document.getElementById("start-screen");
 const gameScreen = document.getElementById("game-screen");
 const winScreen = document.getElementById("win-screen");
 const loadingScreen = document.getElementById("loading-screen");
+const curtains = document.getElementById("curtains");
+const floor = document.getElementById("floor");
 
 let images = [];
 let imagesArr = [];
@@ -169,6 +171,7 @@ function startGame(e) {
   difficulty = +e.target.getAttribute("value");
   startScreen.style.display = "none";
   loadingScreen.style.display = "flex";
+  floor.style.display = "none";
   setTimeout(() => {
     loadingScreen.style.display = "none";
     gameScreen.style.display = "flex";
@@ -202,3 +205,13 @@ easyBtn.addEventListener("click", (e) => startGame(e));
 mediumBtn.addEventListener("click", (e) => startGame(e));
 hardBtn.addEventListener("click", (e) => startGame(e));
 playAgain.addEventListener("click", () => restartGame());
+
+window.onload = function curtainCall() {
+  curtains.classList.add("curtain-call");
+  startScreen.classList.add("shift-start");
+  document.querySelector(".container").classList.add("fade-black");
+  setTimeout(() => {
+    startScreen.classList.remove("shift-start");
+    startScreen.style.top = 0;
+  }, 5000);
+};
